@@ -13,7 +13,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="cloverfield" options="-parameters" />
+      <module name="cloverfield" options="" />
       <module name="engine" options="-parameters" />
       <module name="web" options="-parameters" />
     </option>

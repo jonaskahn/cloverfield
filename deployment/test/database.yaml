@@ -1,18 +1,18 @@
 version: "3"
 
 volumes:
-  auth-server-db:
-  auth-server-redis:
+  auth-server-test-db:
+  auth-server-test-redis:
 
 services:
-  auth-server-redis:
+  auth-server-test-redis:
     image: bitnami/redis:7.4
-    container_name: auth-server-redis
-    hostname: auth-server-redis
+    container_name: auth-server-test-redis
+    hostname: auth-server-test-redis
     environment:
       - REDIS_PASSWORD=dev
     volumes:
-      - auth-server-redis:/bitnami/redis/data
+      - auth-server-test-redis:/bitnami/redis/data
     ports:
       - 6379:6379
     healthcheck:
@@ -21,10 +21,10 @@ services:
       retries: 6
       start_period: 1s
 
-  auth-server-db:
+  auth-server-test-db:
     image: bitnami/postgresql:16
-    container_name: auth-server-db
-    hostname: auth-server-db
+    container_name: auth-server-test-db
+    hostname: auth-server-test-db
     restart: unless-stopped
     environment:
       - POSTGRESQL_DATABASE=authserver
@@ -32,7 +32,7 @@ services:
       - POSTGRESQL_PASSWORD=dev
       - POSTGRESQL_MAX_CONNECTIONS=200
     volumes:
-      - auth-server-db:/bitnami/postgresql
+      - auth-server-test-db:/bitnami/postgresql
     ports:
       - 5432:5432
     healthcheck:
