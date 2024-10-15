@@ -5,15 +5,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import one.ifelse.spring.authserver.facility.EntityStatus;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -43,6 +44,17 @@ public class Group extends AuditableEntity {
     @Column(name = "path", columnDefinition = "ltree not null")
     @Type(value = PostgreSQLLTreeType.class)
     private String path;
+
+    @ManyToMany
+    @JoinTable(name = "group_roles",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    @ToString.Exclude
+    private Set<Permission> permissions = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "group")
+    @ToString.Exclude
+    private Set<User> users = new LinkedHashSet<>();
 
 
     @Override

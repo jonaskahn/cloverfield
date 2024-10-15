@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import one.ifelse.spring.authserver.facility.EntityStatus;
 import one.ifelse.spring.authserver.facility.Language;
 import one.ifelse.spring.authserver.facility.Sex;
@@ -12,9 +11,11 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -29,9 +30,12 @@ public class User extends AuditableEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "group_id")
+    private Long groupId;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "group_id", nullable = false)
+    @JoinColumn(name = "group_id", nullable = false, insertable = false, updatable = false)
     @ToString.Exclude
     private Group group;
 
@@ -96,6 +100,13 @@ public class User extends AuditableEntity {
     @ColumnDefault("1")
     @Column(name = "status", nullable = false)
     private EntityStatus status;
+
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    @ToString.Exclude
+    private Set<Permission> permissions = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object o) {

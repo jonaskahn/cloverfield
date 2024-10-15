@@ -4,11 +4,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import one.ifelse.spring.authserver.facility.EntityStatus;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -22,7 +22,7 @@ public class SecureUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return user.getAuthorities().stream().map(SimpleGrantedAuthority::new).toList();
     }
 
     @Override

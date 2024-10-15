@@ -17,7 +17,7 @@ public enum EntityStatus {
 
     private static final Map<Integer, EntityStatus> values = Arrays.stream(EntityStatus.values())
             .collect(Collectors.toMap(EntityStatus::getCode, Function.identity()));
-    
+
     @Getter(onMethod_ = {@JsonValue})
     private final int code;
     @Getter
